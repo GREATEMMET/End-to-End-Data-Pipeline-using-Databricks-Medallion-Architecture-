@@ -344,6 +344,10 @@ Pipeline orchestration automates the execution of data processing tasks, ensurin
 **⏰ Scheduling**
 - Configured daily batch execution at 15:00 (Toronto time)
 - Ensures consistent and timely data availability
+###**Daily runs for 3 consecutive days**
+![](images/job_completion1.png)
+![](images/job_completion3.png)
+![](images/job_completion2.png)
 
 **📸 Pipeline Execution**
 
@@ -367,6 +371,9 @@ This pipeline includes observability and reliability mechanisms to ensure consis
 - Logged pipeline execution stages (start, success, failure)
 - Captured key events during ingestion and transformation
 - Enabled traceability for debugging and monitoring
+
+### **Job Run Monitoring and Observabilty**
+![](images/job_run_monitoring.png)
 
 ✅ Data Validation Checks
 - Verified row counts between layers
