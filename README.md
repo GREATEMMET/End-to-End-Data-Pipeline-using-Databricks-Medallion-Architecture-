@@ -102,22 +102,22 @@ Gold Layer: Business logic is applied through joins and aggregations to create a
 ### Silver Layer: Cleaned and standardized dataset
 
 #### Silver crm_customer_info table
-![Silver crm_customer_info table](images/bronze_crm_customer_info.png)
+![Silver crm_customer_info table](images/silver_crm_customer_info.png)
 
 #### Silver crm_product_info table
-![Silver crm_product_info table](images/bronze_crm_product_info.png)
+![Silver crm_product_info table](images/silver_crm_product_info.png)
 
 #### Silver crm_sales_details table
-![Silver crm_sales_details table](images/bronze_crm_sales_details.png)
+![Silver crm_sales_details table](images/silver_crm_sales_details.png)
 
 #### Silver erp_customer_az12 table
-![Silver erp_customer_az12 table](images/bronze_erp_customer_az12.png)
+![Silver erp_customer_az12 table](images/silver_erp_customer_az12.png)
 
 #### Silver erp_location_a101 table
-![Silver erp_location_a101 table](images/bronze_erp_location_a101.png)
+![Silver erp_location_a101 table](images/silver_erp_location_a101.png)
 
 #### Silver erp_product_category_g1v2 table
-![Silver erp_product_category_g1v2 table](images/bronze_erp_product_category_g1v2.png)
+![Silver erp_product_category_g1v2 table](images/silver_erp_product_category_g1v2.png)
 
 
 ### Gold Layer: Final analytics-ready tables
