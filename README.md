@@ -1,6 +1,6 @@
 # End-to-End-Data-Pipeline-using-Databricks-Medallion-Architecture-
 ---
-# 📌 Problem Definition
+# Problem Definition
 
 Many organizations still rely on on-premise systems that generate raw CSV data. In this project, I worked with such a dataset that contained multiple data quality issues, including inconsistencies, duplicate records, incorrect data types, and invalid values such as nulls, zeros, and negative entries where they should not exist.
 
@@ -9,7 +9,7 @@ Additionally, the dataset included related tables with conflicting values and in
 Without proper processing and structure, this type of data is not suitable for business analytics and prevents organizations from generating reliable, data-driven decisions.
 
 
-## 🎯 Objective
+## Objective
 The goal of this project is to design and implement an end-to-end data pipeline using the Databricks platform. The pipeline ingests raw CSV data from lakehouse volumes into structured tables and applies transformations using the Medallion Architecture (Bronze, Silver, Gold).
 
 By leveraging Delta Lake and lakehouse principles, the system produces clean, consistent, and analytics-ready datasets. The pipeline is fully automated to run daily, ensuring reliable and up-to-date data availability.
@@ -21,14 +21,14 @@ These characteristics make it suitable for demonstrating data ingestion, cleanin
 
 
 ## 📦 Scope Definition
-✅ This project includes:
+This project includes:
 - Batch ingestion (CSV → Delta format)
 - Data cleaning and transformation
 - Data modeling using fact and dimension tables
 - Pipeline orchestration (daily scheduled runs at 15:00 Toronto time)
 - Pipeline monitoring and failure notifications
 
-❌ This project does not include:
+This project does not include:
 - Real-time or streaming data processing
 
 This project is focused on batch data processing and structured transformation rather than real-time ingestion.
@@ -44,7 +44,7 @@ This project is focused on batch data processing and structured transformation r
 - Pipeline runs automatically with correctly defined dependencies
 
 
-🧠 Key Concepts
+Key Concepts
 - Medallion Architecture: A layered data design pattern that improves data quality and structure across Bronze (raw), Silver (cleaned), and Gold (business-ready) layers
 - Delta Lake: Provides ACID transactions, schema enforcement, and versioning (data history) for reliable and consistent data processing
 - Lakehouse Architecture: Combines the scalability of data lakes with the structure and performance of data warehouses
@@ -53,7 +53,7 @@ This project is focused on batch data processing and structured transformation r
 --- 
 
 
-# 🏗️ Architecture Overview
+#  Architecture Overview
 The architecture follows a layered lakehouse design that ingests raw data from on-premise systems and processes it through Bronze, Silver, and Gold layers using the Medallion Architecture.
 
 Raw CSV data is first stored in lakehouse volumes before being ingested into Delta tables. Each layer performs a specific role: the Bronze layer preserves raw data, the Silver layer ensures data quality through cleaning and standardization, and the Gold layer applies business logic to produce analytics-ready datasets.
@@ -154,7 +154,7 @@ This approach simplifies pipeline design, improves reliability through controlle
 
 The Bronze layer ingests raw data from on-premise CSV files into the lakehouse with no transformations. Its purpose is to preserve the original data structure, ensure traceability, and act as a reliable source for reprocessing.
 
-⚙️ Implementation
+Implementation
 
 Raw CSV files are read using PySpark and stored as Delta tables:
 ### Config file to load data from volumes to delta table
@@ -172,14 +172,15 @@ Schema Inference: Schema inference is used during ingestion to allow flexibility
 
 Overwrite Mode: Overwrite mode is used to refresh the Bronze layer with the latest source data, ensuring consistency across pipeline runs.
 
-🔥 Key Insight: The Bronze layer acts as a single source of truth, allowing downstream layers to be rebuilt in case of failures.
+ Key Insight: The Bronze layer acts as a single source of truth, allowing downstream layers to be rebuilt in case of failures.
 
 <br><br><br>
 
 ## 🧹 Silver Layer (Multiple Tables Approach)
 
 The Silver layer applies data cleaning and standardization across all ingested Bronze tables to ensure consistency, accuracy, and reliability for downstream processing.
-⚙️ Transformations Applied
+
+Transformations Applied
 - Removed duplicate records to ensure data uniqueness
 - Handled missing/null values and empty strings to improve data completeness
 - Trimmed leading and trailing whitespace for consistency
@@ -190,7 +191,8 @@ The Silver layer applies data cleaning and standardization across all ingested B
 
 
 
-### 📊 Table-Level Transformations
+###  Table-Level Transformations
+
 |Table: crm_cust_info | Key Issues Identified      | Transformations Applied                       |
 |-------------------- |----------------------------|-----------------------------------------------|
 ||Duplicate values detected in cst_id (data integrity concern)| Applied window function to retrieve most recent customer information |
@@ -248,16 +250,16 @@ The Silver layer applies data cleaning and standardization across all ingested B
 
 
 
-🎯 Why It Matters: The Silver layer ensures data consistency, accuracy, and reliability, making it suitable for building trusted business logic in the Gold layer.
+ Why It Matters: The Silver layer ensures data consistency, accuracy, and reliability, making it suitable for building trusted business logic in the Gold layer.
 
 <br><br><br>
 
-## 🧠 Gold Layer (Business Logic)
+## 🏆 Gold Layer (Business Logic)
 
-🧱 Purpose: 
+Purpose: 
 The Gold layer transforms cleaned Silver data into business-ready datasets by applying joins, aggregations, and data modeling to support analytics and decision-making.
 
-⚙️ Business Logic Applied
+ Business Logic Applied
 - Applied denormalization by joining multiple datasets to customers and products
 - Replace foreign keys from fact with derived surrogate keys from dimensions after joining tables to ensure easy key retrieval 
 - Performed aggregations 
@@ -278,20 +280,19 @@ Dimension Tables
 - dim_customers
 - dim_products
 
-📈 Output: The Gold layer produces fully transformed, analytics-ready tables that can be directly consumed by BI tools for reporting and dashboarding.
+ Output: The Gold layer produces fully transformed, analytics-ready tables that can be directly consumed by BI tools for reporting and dashboarding.
 
-🎯 Business Value: The Gold layer converts raw and cleaned data into actionable insights, enabling data-driven decision-making through reliable and structured analytics datasets.
+ Business Value: The Gold layer converts raw and cleaned data into actionable insights, enabling data-driven decision-making through reliable and structured analytics datasets.
 
 
 
 ---
 
 # Data Modeling
-🧱 Purpose
-
+Purpose:
 The data model is designed to organize data into a structured format that supports efficient querying and analytics.
 
-⭐ Data Model Design
+⭐ Data Model Design:
 
 The Gold layer follows a star schema, consisting of one central fact table connected to multiple dimension tables.
 
@@ -317,25 +318,25 @@ Structure:
 - Fact table contains foreign keys referencing dimension tables
 - Enables efficient joins and simplified analytical queries
 
-## 🔄 Slowly Changing Dimensions (SCD Type 2)
+## Slowly Changing Dimensions (SCD Type 2)
 - Implemented to track historical changes in dimension data by creating new records instead of updating existing ones
 - Preserves both current and historical records for accurate time-based analysis
 - The most recent (active) records are identified using an end_date IS NULL condition
 - This approach ensures that only current product information is used in analysis, while still retaining historical data for reference
 
-🎯 Why It Matters
+Why It Matters
 
 The star schema improves query performance and simplifies reporting, making it easier to generate insights from large datasets.
 
 ---
 
-## 🔄 Pipeline Orchestration
+## Pipeline Orchestration
 
-🧱 Purpose
+Purpose:
 
 Pipeline orchestration automates the execution of data processing tasks, ensuring the Bronze, Silver, and Gold layers run in the correct sequence.
 
-**⚙️ Workflow Design**
+** Workflow Design**
 - Sequential execution: Bronze → Silver → Gold
 - Dependencies ensure each layer runs only after the previous one completes successfully
 - Pipeline stops on failure to prevent inconsistent data states
@@ -349,12 +350,12 @@ Pipeline orchestration automates the execution of data processing tasks, ensurin
 ![](images/job_completion3.png)
 ![](images/job_completion2.png)
 
-**📸 Pipeline Execution**
+** Pipeline Execution**
 
 A workflow pipeline manages notebook execution, tracks progress, and visualizes dependencies between tasks.
 
 
-**🎯 Key Insight**
+** Key Insight**
 
 Automation ensures consistent and reliable data processing, enabling the timely delivery of analytics-ready datasets with minimal manual intervention.
 
@@ -363,11 +364,9 @@ Automation ensures consistent and reliable data processing, enabling the timely 
 
 # 📊 Observability & Reliability
 
-🧱 Purpose
-
 This pipeline includes observability and reliability mechanisms to ensure consistent execution, early issue detection, and effective failure handling.
 
-⚙️ Logging
+ Logging
 - Logged pipeline execution stages (start, success, failure)
 - Captured key events during ingestion and transformation
 - Enabled traceability for debugging and monitoring
